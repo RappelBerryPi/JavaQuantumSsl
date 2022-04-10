@@ -4,8 +4,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 import java.util.Base64;
@@ -36,30 +34,24 @@ public class QuantumKeyAgreementSpi extends KeyAgreementSpi {
     protected Key engineDoPhase(Key arg0, boolean lastStep) throws InvalidKeyException, IllegalStateException {
         if (!lastStep) {
             this.otherKey = arg0;
+            return null;
         } else {
-            byte[] brokenSecret = BreakSecret(arg0.getEncoded());
-            String format = Base64.getEncoder().encodeToString(this.sharedSecret);
+            var cipherText = arg0.getEncoded();
+            byte[] otherSharedSecret = this.DecapsulateSecret(cipherText);
             return new Key() {
 
                 @Override
-                public String getAlgorithm() {
-                    // TODO Auto-generated method stub
-                    return null;
-                }
+                public String getAlgorithm() { return null; }
 
                 @Override
                 public byte[] getEncoded() {
-                    return brokenSecret;
+                    return otherSharedSecret;
                 }
 
                 @Override
-                public String getFormat() {
-                    return format;
-                }
-                
+                public String getFormat() { return Base64.getEncoder().encodeToString(sharedSecret); }
             };
         }
-        return null;
     }
 
     @Override
@@ -93,67 +85,7 @@ public class QuantumKeyAgreementSpi extends KeyAgreementSpi {
         throw new InvalidAlgorithmParameterException();
     }
 
-    public void init(Key arg0) throws InvalidKeyException {
-        this.engineInit(arg0, null);
-    }
-    public void doPhase(Key key, boolean arg1) throws InvalidKeyException, IllegalStateException {
-        this.engineDoPhase(key, arg1);
-    }
-    public byte[] generateSecret() {
-        return this.engineGenerateSecret();
-    }
-
-    public PublicKey getPublicKey() {
-        byte[] publicKey = kem.export_public_key();
-        return new PublicKey() {
-
-            @Override
-            public String getAlgorithm() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public byte[] getEncoded() {
-                return publicKey;
-            }
-
-            @Override
-            public String getFormat() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-            
-        };
-    }
-
-    public PrivateKey getPrivateKey() {
-        byte[] privateKey = kem.export_secret_key();
-        return new PrivateKey() {
-
-            @Override
-            public String getAlgorithm() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public byte[] getEncoded() {
-                return privateKey;
-            }
-
-            @Override
-            public String getFormat() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-            
-        };
-    }
-    public byte[] getCipherText() {
-        return cipherText;
-    }
-    public byte[] BreakSecret(byte[] cipherText) {
+    public byte[] DecapsulateSecret(byte[] cipherText) {
         return kem.decap_secret(cipherText);
     }
     
