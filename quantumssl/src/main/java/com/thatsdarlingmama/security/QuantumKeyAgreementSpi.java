@@ -59,6 +59,7 @@ public class QuantumKeyAgreementSpi extends KeyAgreementSpi {
         Pair<byte[], byte[]> pair = this.kem.encap_secret(this.otherKey.getEncoded());
         this.cipherText = pair.getLeft();
         this.sharedSecret = pair.getRight();
+        System.out.println(Base64.getEncoder().encodeToString(sharedSecret));
         return this.cipherText;
     }
 

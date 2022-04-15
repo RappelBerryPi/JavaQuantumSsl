@@ -2,9 +2,14 @@ package com.thatsdarlingmama;
 
 import java.security.InvalidKeyException;
 import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
+import java.security.spec.AlgorithmParameterSpec;
+
+import javax.crypto.KeyAgreement;
 
 /**
  * Hello world!
@@ -30,25 +35,23 @@ public class App {
         */
 
         /*
-        KeyPairGenerator keyAgreementGenerator = KeyPairGenerator.getInstance("Kyber1024");
-        KeyPairGenerator keyAgreementGenerator2 = KeyPairGenerator.getInstance("Kyber1024");
-        KeyAgreement keyAgreement = KeyAgreement.getInstance("Kyber1024");
-        KeyAgreement keyAgreement2 = KeyAgreement.getInstance("Kyber1024");
+        String KeyEncapsulationMechanism = "Kyber1024";
+        KeyPairGenerator clientGenerator = KeyPairGenerator.getInstance(KeyEncapsulationMechanism);
+        KeyPairGenerator serverGenerator = KeyPairGenerator.getInstance(KeyEncapsulationMechanism);
+        KeyAgreement client = KeyAgreement.getInstance(KeyEncapsulationMechanism);
+        KeyAgreement server = KeyAgreement.getInstance(KeyEncapsulationMechanism);
 
-        keyAgreement.init(keyAgreementGenerator.generateKeyPair().getPrivate());
-        keyAgreement2.init(keyAgreementGenerator2.generateKeyPair().getPrivate());
-        keyAgreement.doPhase(keyAgreementGenerator2.generateKeyPair().getPublic(), false);
-        keyAgreement2.doPhase(keyAgreementGenerator.generateKeyPair().getPublic(), false);
-        byte[] cipherText  = keyAgreement.generateSecret();
-        byte[] cipherText2 = keyAgreement2.generateSecret();
+        /* normal process
+        client.init(clientGenerator.generateKeyPair().getPrivate());
+        server.init(serverGenerator.generateKeyPair().getPrivate());
+        //client.doPhase(serverGenerator.generateKeyPair().getPublic(), false);
+        server.doPhase(clientGenerator.generateKeyPair().getPublic(), false);
+        //byte[] cipherText  = client.generateSecret();
+        byte[] cipherText = server.generateSecret();
+        /* end normal process
 
-        Key key = keyAgreement.doPhase(WrapBytes(cipherText2), true);
-        Key key2 = keyAgreement2.doPhase(WrapBytes(cipherText), true);
-
-        byte[] broken = Base64.getDecoder().decode(key.getFormat());
-        byte[] broken2 = Base64.getDecoder().decode(key2.getFormat());
-        System.out.println(Arrays.equals(broken2, key.getEncoded()));
-        System.out.println(Arrays.equals(broken, key2.getEncoded()));
+        Key key = client.doPhase(WrapBytes(cipherText), true);
+        System.out.println(Base64.getEncoder().encodeToString(key.getEncoded()));
         */
 
     }
