@@ -11,6 +11,10 @@ import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.KeyAgreement;
 
+import com.thatsdarlingmama.nat.LeanCryptoNative;
+
+import javax.crypto.KEM;
+
 /**
  * Hello world!
  *
@@ -53,6 +57,8 @@ public class App {
         Key key = client.doPhase(WrapBytes(cipherText), true);
         System.out.println(Base64.getEncoder().encodeToString(key.getEncoded()));
         */
+        KeyPair keyPair = LeanCryptoNative.GetKeyPair(null);
+        
 
     }
     private static Key WrapBytes(byte[] cipherText) {

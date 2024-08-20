@@ -1,3 +1,4 @@
+/*
 package com.thatsdarlingmama.security;
 
 import java.security.InvalidAlgorithmParameterException;
@@ -8,8 +9,6 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.SignatureSpi;
 
-import org.openquantumsafe.Signature;
-import org.openquantumsafe.Sigs;
 
 public class QuantumSignatureSpi extends SignatureSpi {
     private String quantumSignatureType;
@@ -34,7 +33,7 @@ public class QuantumSignatureSpi extends SignatureSpi {
     /***
      * @deprecated
      * This method will only ever return null
-     */
+     /
     protected Object engineGetParameter(String arg0) throws InvalidParameterException {
         return null;
     }
@@ -130,3 +129,4 @@ public class QuantumSignatureSpi extends SignatureSpi {
         return pKey;
     }
 }
+ */
